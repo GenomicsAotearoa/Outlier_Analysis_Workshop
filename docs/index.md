@@ -1,6 +1,10 @@
 <style>h1 {text-align: center;}</style>
 <h1><b>Outlier Analysis Workshop</b></h1>
 
+<center>
+![banner](images/Banner-01.png)
+</center>
+
 ## Preamble
 
 There are lots of interesting patterns that you can extract from genetic variant data. This can include patterns of linkage, balancing selection, or even inbreeding signals. One of the most common ones is to try find sites on the genome that are under selection. The following vignette will take you through the basics of genetic selection analysis. 
