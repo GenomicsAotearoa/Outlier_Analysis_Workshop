@@ -13,8 +13,8 @@ There are lots of interesting patterns that you can extract from genetic variant
 
 | <div style="width:350px"> **Day**</div>           | **Lesson overview**                                                                       |
 | :------------------------------------------------ | :---------------------------------------------------------------------------------------- |
-| [  Day 1  ](./day_1/1.intro_and_setup.md){ .md-button .md-button--primary } | Introduction<br>PCAdapt<br>VCFtools<br>Setup for Bayescan & Baypass                       |
-| [  Day 2  ](./day_2/4.bayescan.md){ .md-button .md-button--primary } | Bayescan<br>Bayepass<br>Compile results<br>Group discussions<br>Meta-analysis contribution |
+| [  Day 1  ](./1.intro_and_setup.md){ .md-button .md-button--primary } | Introduction<br>PCAdapt<br>VCFtools<br>Setup for Bayescan & Baypass                       |
+| [  Day 2  ](./4.bayescan.md){ .md-button .md-button--primary } | Bayescan<br>Bayepass<br>Compile results<br>Group discussions<br>Meta-analysis contribution |
 |                                                   |                                                                                           |
 
 ??? calendar-days "Schedule"
