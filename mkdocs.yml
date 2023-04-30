@@ -120,3 +120,14 @@ plugins:
 
 extra_css:
   - stylesheets/extra.css
+
+nav:
+  - 'Home': 'index.md'
+  - 'Day 1':
+    - 'Introduction to Outlier Analysis': 'day_1/1.intro_and_setup.md'
+    - 'PCAdapt': 'day_1/2.pcadapt.md'
+    - 'VCFtools': 'day_1/3.vcftools.md'
+  - 'Day 2':
+    - 'BayeScan': 'day_2/4.bayescan.md'
+    - 'BayPass': 'day_2/5.baypass.md'
+    - 'Conclusion': 'day_2/6.conclude.md'
