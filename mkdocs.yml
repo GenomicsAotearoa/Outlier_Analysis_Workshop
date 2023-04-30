@@ -8,17 +8,6 @@ site_url: "https://genomicsaotearoa.github.io/Outlier_Analysis_Workshop/"
 repo_name:   GenomicsAotearoa/Outlier_Analysis_Workshop  
 repo_url: https://github.com/GenomicsAotearoa/Outlier_Analysis_Workshop
 
-nav:
-  - 'Home': index.md
-  - 'Day 1':
-    - 'Introduction to Outlier Analysis': 1.intro_and_setup.md
-    - 'PCAdapt': 2.pcadapt.md
-    - 'VCFtools': 3.vcftools.md
-  - 'Day 2':
-    - 'BayeScan': 4.bayescan.md
-    - 'BayPass': 5.baypass.md
-    - 'Conclusion': 6.conclude.md
-
 theme:
   name: material
   logo: ./theme_images/nesi_ga.png
