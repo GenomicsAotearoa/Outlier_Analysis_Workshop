@@ -1,0 +1,876 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Genomics Aotearoa & NeSI">
+      
+      
+        <link rel="canonical" href="https://genomicsaotearoa.github.io/Outlier_Analysis_Workshop/day_2/4.bayescan/">
+      
+      
+        <link rel="prev" href="../../day_1/3.vcftools/">
+      
+      
+        <link rel="next" href="../5.baypass/">
+      
+      <link rel="icon" href="../../theme_images/nesi_ga.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
+    
+    
+      
+        <title>BayeScan - Outlier Analysis Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Mukta";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bayescan" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Outlier Analysis Workshop" class="md-header__button md-logo" aria-label="Outlier Analysis Workshop" data-md-component="logo">
+      
+  <img src="../../theme_images/nesi_ga.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Outlier Analysis Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              BayeScan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+            
+              <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_3" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9h-1.9M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69m-9.15 3.96h2.3L12 9l-1.15 3.65Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+            
+              <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_3">
+            
+              <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_2" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+              </label>
+            
+          
+        </form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/GenomicsAotearoa/Outlier_Analysis_Workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GenomicsAotearoa/Outlier_Analysis_Workshop
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../day_1/1.intro_and_setup/" class="md-tabs__link">
+        Day 1
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="./" class="md-tabs__link md-tabs__link--active">
+        Day 2
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Outlier Analysis Workshop" class="md-nav__button md-logo" aria-label="Outlier Analysis Workshop" data-md-component="logo">
+      
+  <img src="../../theme_images/nesi_ga.png" alt="logo">
+
+    </a>
+    Outlier Analysis Workshop
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/GenomicsAotearoa/Outlier_Analysis_Workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GenomicsAotearoa/Outlier_Analysis_Workshop
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Day 1
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Day 1
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../day_1/1.intro_and_setup/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../day_1/2.pcadapt/" class="md-nav__link">
+        PCAdapt
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../day_1/3.vcftools/" class="md-nav__link">
+        VCFtools
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Day 2
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Day 2
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        BayeScan
+      </a>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5.baypass/" class="md-nav__link">
+        BayPass
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6.conclude/" class="md-nav__link">
+        Conclusion
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="bayescan">BayeScan<a class="headerlink" href="#bayescan" title="Permanent link">&para;</a></h1>
+<p>The BayeScan manual is available <a href="https://github.com/mfoll/BayeScan">here</a>.</p>
+<div class="admonition abstract">
+<p class="admonition-title">Citation</p>
+<p>Foll, M., &amp; Gaggiotti, O. (2008). A genome-scan method to identify selected loci appropriate for both dominant and codominant markers: A Bayesian perspective. Genetics, 180(2), 977-993. <a href="https://doi.org/10.1534/genetics.108.092221">https://doi.org/10.1534/genetics.108.092221</a> </p>
+</div>
+<p>BayeScan identifies outlier SNPs based on allele frequencies.</p>
+<div class="admonition tip">
+<p class="admonition-title">Prepare your terminal session</p>
+<p>Since you are likely using a new terminal session today, you will need to set the environment variables again to use them. Copy and paste the following command into your terminal to ensure you reference the correct variables.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">DIR</span><span class="o">=</span>~/outlier_analysis
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">VCF</span><span class="o">=</span><span class="nv">$DIR</span>/data/starling_3populations.recode.vcf
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">METADATA</span><span class="o">=</span><span class="nv">$DIR</span>/data/starling_3populations_metadata.txt
+</code></pre></div>
+</div>
+<p>First, we will need to convert our VCF to the Bayescan format. To do this, we will use the genetic file conversion program <a href="http://www.cmpg.unibe.ch/software/PGDSpider/">PGDspider</a>. </p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$DIR</span>/programs
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>wget<span class="w"> </span>http://www.cmpg.unibe.ch/software/PGDSpider/PGDSpider_2.1.1.5.zip
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>unzip<span class="w"> </span>*.zip
+</code></pre></div>
+</div>
+<p>We also need to create a new populations metadata file containing individual names in column 1 and population names in column 2.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$DIR</span>/data
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>cut<span class="w"> </span>-f1,2<span class="w"> </span><span class="nv">$METADATA</span><span class="w"> </span>&gt;<span class="w"> </span>starling_3populations_metadata_INDPOP.txt
+</code></pre></div>
+</div>
+<p>Now, navigate to the directory where we will run our Bayescan analysis.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$DIR</span>/analysis/bayescan
+</code></pre></div>
+</div>
+<p>We will run PGDSpider in two steps: </p>
+<ol>
+<li>Convert the VCF file to the PGD format </li>
+<li>Convert PGD format to Bayescan format. </li>
+</ol>
+<p>To do this, we will need to create a SPID file, which we will call <code>VCF_PGD.spid</code>, using the <code>nano</code> command.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>nano<span class="w"> </span>VCF_PGD.spid
+</code></pre></div>
+</div>
+<p>Into the <code>VCG_PGD.spid</code> file, copy and paste the code below. On the line that starts with <code>VCF_PARSER_POP_FILE_QUESTION</code>, replace the example location with the location of your metadata file.</p>
+<div class="admonition note">
+<p class="admonition-title">Write the following into <code>VCF_PGD.spid</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a># VCF Parser questions
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>PARSER_FORMAT=VCF
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a># Only output SNPs with a phred-scaled quality of at least:
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>VCF_PARSER_QUAL_QUESTION=
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a># Select population definition file:
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>VCF_PARSER_POP_FILE_QUESTION=/home/&lt;user&gt;/outlier_analysis/data/starling_3populations_metadata_INDPOP.txt
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a># What is the ploidy of the data?
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>VCF_PARSER_PLOIDY_QUESTION=DIPLOID
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a># Do you want to include a file with population definitions?
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>VCF_PARSER_POP_QUESTION=true
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a># Output genotypes as missing if the Phred-scale genotype quality is below:
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>VCF_PARSER_GTQUAL_QUESTION=
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a># Do you want to include non-polymorphic SNPs?
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>VCF_PARSER_MONOMORPHIC_QUESTION=false
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a># Only output following individuals (ind1, ind2, ind4, ...):
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>VCF_PARSER_IND_QUESTION=
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a># Only input following regions (refSeqName:start:end, multiple regions: whitespace separated):
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>VCF_PARSER_REGION_QUESTION=
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a># Output genotypes as missing if the read depth of a position for the sample is below:
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>VCF_PARSER_READ_QUESTION=
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a># Take most likely genotype if &quot;PL&quot; or &quot;GL&quot; is given in the genotype field?
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>VCF_PARSER_PL_QUESTION=false
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a># Do you want to exclude loci with only missing data?
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>VCF_PARSER_EXC_MISSING_LOCI_QUESTION=false
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a># PGD Writer questions
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>WRITER_FORMAT=PGD
+</code></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Replace path for <code>VCF_PARSER_POP_FILE_QUESTION</code></p>
+<p>Please remember to replace <code>&lt;user&gt;</code> with your user ID in the above or the absolute path to where your <code>_metadata_INDPOP.txt</code> is located!</p>
+</div>
+<details class="tip">
+<summary>Writing out files with <code>nano</code></summary>
+<p>Once you have copied and pasted the above, press <kbd>Ctrl</kbd> + <kbd>O</kbd>, then press <kbd>Enter</kbd> to save your file. Finally, exit the program using <kbd>Ctrl</kbd> + <kbd>X</kbd></p>
+</details>
+<p>Run the two-step conversion.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>module<span class="w"> </span>purge
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>module<span class="w"> </span>load<span class="w"> </span>Java/1.8.0_144
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>java<span class="w"> </span>-Xmx1024m<span class="w"> </span>-Xms512m<span class="w"> </span>-jar<span class="w"> </span><span class="nv">$DIR</span>/programs/PGDSpider_2.1.1.5/PGDSpider2-cli.jar<span class="w"> </span>-inputfile<span class="w"> </span><span class="nv">$VCF</span><span class="w"> </span>-inputformat<span class="w"> </span>VCF<span class="w"> </span>-outputfile<span class="w"> </span>starling_3populations.pgd<span class="w"> </span>-outputformat<span class="w"> </span>PGD<span class="w"> </span>-spid<span class="w"> </span>VCF_PGD.spid
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>java<span class="w"> </span>-Xmx1024m<span class="w"> </span>-Xms512m<span class="w"> </span>-jar<span class="w"> </span><span class="nv">$DIR</span>/programs/PGDSpider_2.1.1.5/PGDSpider2-cli.jar<span class="w"> </span>-inputfile<span class="w"> </span>starling_3populations.pgd<span class="w"> </span>-inputformat<span class="w"> </span>PGD<span class="w"> </span>-outputfile<span class="w"> </span>starling_3populations.bs<span class="w"> </span>-outputformat<span class="w"> </span>GESTE_BAYE_SCAN
+</code></pre></div>
+<details class="success">
+<summary>Output</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>INFO  12:54:18 - load PGDSpider configuration from: /scale_wlg_nobackup/filesets/nobackup/nesi02659/outlier_analysis_workshop/programs/PGDSpider_2.1.1.5/spider.conf.xml
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Warning: Could not get charToByteConverterClass!
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>initialize convert process...
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>read input file...
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>read input file done.
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>write output file...
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>write output file done.
+</code></pre></div>
+</details>
+<details class="success">
+<summary>Output</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>INFO  12:57:05 - load PGDSpider configuration from: /scale_wlg_nobackup/filesets/nobackup/nesi02659/outlier_analysis_workshop/programs/PGDSpider_2.1.1.5/spider.conf.xml
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Warning: Could not get charToByteConverterClass!
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>No SPID file specified containing preanswered conversion questions!!!
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>  A template SPID file was saved under: template_PGD_GESTE_BAYE_SCAN.spid
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>  for more details see manual.
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>initialize convert process...
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>read input file...
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>read input file done.
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>write output file...
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>write output file done.
+</code></pre></div>
+</details>
+</div>
+<p>Let us have a quick look at what the input file looks like.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>head<span class="w"> </span>starling_3populations.bs
+</code></pre></div>
+<details class="success">
+<summary>Output</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>[loci]=5007
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>[populations]=3
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>[pop]=1
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a> 1      12      2       9 3 
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a> 2      20      2       11 9 
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a> 3      18      2       15 3 
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a> 4      20      2       0 20 
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a> 5      22      2       2 20
+</code></pre></div>
+</details>
+</div>
+<p>So for each population, we have a note of how many REF and ALT alleles we have at each genomic variant position.</p>
+<div class="admonition note">
+<p class="admonition-title">An important note about additive genetic variance</p>
+<p>It is important to bear in mind how the input genetic data for outlier or association models is being interpreted by the model. When dealing with many of these models (and input genotype files), the assumption is that SNP effects are <a href="https://link.springer.com/referenceworkentry/10.1007/978-3-319-47829-6_5-1">additive</a>. This can be seen from, for example, the way we encode homozygous reference allele, heterozygous, and homozygous alternate allele as "0", "1", and "2" respectively in a BayPass input genofile. For the diploid organism (with two variant copies for each allele), one copy of a variant (i.e., heterozygous) is assumed to have half the effect of having two copies. However, what if the locus in question has dominance effects? This would mean the heterozygous form behaves the same as the homozygous dominant form, and it would be more appropriate to label these instead as "0", "0", "1". But with thousands, if not millions, of (most likely) completely unknown variants in a dataset, how can we possibly know? The answer is we cannot. Most models assume additive effects since this is the simplest assumption. However, by not factoring in dominance effects, we could be missing many important functional variants, as <a href="https://www.nature.com/articles/s41588-021-00872-5">Reynolds et al. (2021)</a> demonstrates. Genomics is full of caveats and pitfalls. While it provides new directions for exploration, it can also be overwhelming. Remember, your selection analysis does not have to be exhaustive. Just make sure it is fit for purpose within your study design. There is so much going on in just one genome; there is no way you can analyze everything in one go.</p>
+</div>
+<p>Now let us set Bayescan to run. Use the command <code>nano bayescan_starling.sl</code> to create a Slurm script.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="ch">#!/bin/bash -e</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="c1">#SBATCH --account=nesi02659</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="c1">#SBATCH --job-name=bayescan_starling.sl</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1">#SBATCH --time=12:00:00</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="c1">#SBATCH --mem=5GB</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="c1">#SBATCH --output=%x_%j.out</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="c1">#SBATCH --error=%x_%j.err</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="c1">#SBATCH --ntasks=1</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="c1">#SBATCH --cpus-per-task=8</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="c1">#SBATCH --profile task</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="nb">cd</span><span class="w"> </span>~/outlier_analysis/analysis/bayescan
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="c1"># Load bayescan</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>module<span class="w"> </span>purge
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>module<span class="w"> </span>load<span class="w"> </span>BayeScan/2.1-GCCcore-7.4.0
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="c1"># Run bayescan. </span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>bayescan_2.1<span class="w"> </span>./starling_3populations.bs<span class="w"> </span>-od<span class="w"> </span>./<span class="w"> </span>-threads<span class="w"> </span><span class="m">8</span><span class="w"> </span>-n<span class="w"> </span><span class="m">5000</span><span class="w"> </span>-thin<span class="w"> </span><span class="m">10</span><span class="w"> </span>-nbp<span class="w"> </span><span class="m">20</span><span class="w"> </span>-pilot<span class="w"> </span><span class="m">5000</span><span class="w"> </span>-burn<span class="w"> </span><span class="m">50000</span><span class="w"> </span>-pr_odds<span class="w"> </span><span class="m">10</span>
+</code></pre></div>
+</div>
+<p>Once you have copied and pasted the above, submit your job script to the scheduler to run using the command <code>sbatch bayescan_starling.sl</code>. It should take approximately 1 hour to run. Currently, everything is set to default. Read the manual to understand what the arguments/flags mean and how to refine them if needed.</p>
+<p>Identify outliers:</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>module<span class="w"> </span>load<span class="w"> </span>R-bundle-Bioconductor/3.15-gimkl-2022a-R-4.2.1
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>R
+</code></pre></div>
+</div>
+<div class="admonition r-project">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nf">setwd</span><span class="p">(</span><span class="s">&quot;~/outlier_analysis/analysis/bayescan&quot;</span><span class="p">)</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="nf">source</span><span class="p">(</span><span class="s">&quot;/opt/nesi/CS400_centos7_bdw/BayeScan/2.1-GCCcore-7.4.0/R\ functions/plot_R.r&quot;</span><span class="p">)</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="n">outliers.bayescan</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">plot_bayescan</span><span class="p">(</span><span class="s">&quot;starling_3population_fst.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">FDR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.05</span><span class="p">)</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="n">outliers.bayescan</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="nf">write.table</span><span class="p">(</span><span class="n">outliers.bayescan</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bayescan_outliers.txt&quot;</span><span class="p">)</span>
+</code></pre></div>
+<details class="success">
+<summary>Output</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>$outliers
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>[1]  333  395 1367 2376 3789
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>$nb_outliers
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>[1] 5
+</code></pre></div>
+</details>
+</div>
+<p>And finally, let's do a quick check of convergence. For more information please refer to <a href="https://evomics.org/wp-content/uploads/2016/01/BayeScan_BayeScEnv_exercises.pdf">this documentation</a>.</p>
+<div class="admonition r-project">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nf">library</span><span class="p">(</span><span class="n">coda</span><span class="p">)</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">chain</span><span class="o">&lt;-</span><span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;starling_3population.sel&quot;</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">chain</span><span class="o">&lt;-</span><span class="n">chain</span><span class="p">[</span><span class="o">-</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">)]</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="n">chain</span><span class="o">&lt;-</span><span class="nf">mcmc</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span><span class="n">thin</span><span class="o">=</span><span class="m">10</span><span class="p">)</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="nf">plot</span><span class="p">(</span><span class="n">chain</span><span class="p">)</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="nf">heidel.diag</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span><span class="w"> </span><span class="n">eps</span><span class="o">=</span><span class="m">0.1</span><span class="p">,</span><span class="w"> </span><span class="n">pvalue</span><span class="o">=</span><span class="m">0.05</span><span class="p">)</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="nf">q</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<p>Mapping Outliers</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$DIR</span>/analysis/bayescan
+</code></pre></div>
+</div>
+<p>SNP IDs are lost in BayeScan, line numbers are used as signifiers. We have previously created a list of SNPs in VCF and line numbers, which can be found at <code>$DIR/analysis/starling_3populations_SNPs.txt</code> which we will now reuse to generate a list of the outlier SNPS. We will also grab the line numbers from the BayeScan outliers output.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="w">  </span>awk<span class="w"> </span><span class="s1">&#39;{print $2}&#39;</span><span class="w"> </span>bayescan_outliers.txt<span class="w"> </span>&gt;<span class="w"> </span>bayescan_outliers_numbers.txt
+</code></pre></div>
+</div>
+<p>Create a list of outlier SNPs by matching the values in column 1 of the outliers list with those in column 4 of the entire SNP data list.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>awk<span class="w"> </span><span class="s1">&#39;FNR==NR{a[$1];next} (($4) in a)&#39;</span><span class="w"> </span>bayescan_outliers_numbers.txt<span class="w"> </span>starling_3populations_SNPs.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-f3<span class="w"> </span>&gt;<span class="w"> </span>bayescan_outlierSNPIDs.txt
+</code></pre></div>
+</div>
+<p>Create a Bayescan log-plot and color the outliers in a different color.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>module<span class="w"> </span>load<span class="w"> </span>R-bundle-Bioconductor/3.15-gimkl-2022a-R-4.2.1
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>R
+</code></pre></div>
+</div>
+<div class="admonition r-project">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="nf">setwd</span><span class="p">(</span><span class="s">&quot;~/outlier_analysis/analysis/bayescan&quot;</span><span class="p">)</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="n">bayescan.out</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;starling_3population_fst.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="n">bayescan.out</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">bayescan.out</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate</span><span class="p">(</span><span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">row_number</span><span class="p">())</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="n">bayescan.outliers</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;bayescan_outliers_numbers.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="n">outliers.plot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="n">bayescan.out</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">bayescan.outliers</span><span class="p">[[</span><span class="s">&quot;V1&quot;</span><span class="p">]])</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="nf">png</span><span class="p">(</span><span class="s">&quot;bayescan_outliers.png&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="o">=</span><span class="m">600</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="o">=</span><span class="m">350</span><span class="p">)</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="nf">ggplot</span><span class="p">(</span><span class="n">bayescan.out</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">log10.PO.</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alpha</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">  </span><span class="nf">geom_vline</span><span class="p">(</span>
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="w">    </span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span>
+<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="w">    </span><span class="n">linetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="w">    </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="w">    </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span>
+<a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span>
+<a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="w">    </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span>
+<a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a><span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span>
+<a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a><span class="w">    </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">log10.PO.</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alpha</span><span class="p">),</span>
+<a id="__codelineno-20-24" name="__codelineno-20-24" href="#__codelineno-20-24"></a><span class="w">    </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">outliers.plot</span><span class="p">,</span>
+<a id="__codelineno-20-25" name="__codelineno-20-25" href="#__codelineno-20-25"></a><span class="w">    </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-26" name="__codelineno-20-26" href="#__codelineno-20-26"></a><span class="w">    </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-27" name="__codelineno-20-27" href="#__codelineno-20-27"></a><span class="w">    </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span>
+<a id="__codelineno-20-28" name="__codelineno-20-28" href="#__codelineno-20-28"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-20-29" name="__codelineno-20-29" href="#__codelineno-20-29"></a><span class="w">  </span><span class="nf">scale_x_continuous</span><span class="p">(</span><span class="n">limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-1.3</span><span class="p">,</span><span class="w"> </span><span class="m">3.5</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-20-30" name="__codelineno-20-30" href="#__codelineno-20-30"></a><span class="w">  </span><span class="nf">theme_classic</span><span class="p">(</span><span class="n">base_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-20-31" name="__codelineno-20-31" href="#__codelineno-20-31"></a><span class="w">  </span><span class="nf">theme</span><span class="p">(</span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
+<a id="__codelineno-20-32" name="__codelineno-20-32" href="#__codelineno-20-32"></a><span class="w">        </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">22</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">))</span>
+<a id="__codelineno-20-33" name="__codelineno-20-33" href="#__codelineno-20-33"></a>
+<a id="__codelineno-20-34" name="__codelineno-20-34" href="#__codelineno-20-34"></a><span class="nf">dev.off</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<!-- Switch the png to pdf -->
+<!-- Clean up ggplot2 code, lots of redundancy -->
+
+<p><a class="glightbox" href="../../images/bayescan_outliers.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="windowed_fst" src="../../images/bayescan_outliers.png" width="600px" /></a></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "navigation.tabs", "navigation.tabs.sticky"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>

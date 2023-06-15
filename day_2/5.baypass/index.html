@@ -1,0 +1,858 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Genomics Aotearoa & NeSI">
+      
+      
+        <link rel="canonical" href="https://genomicsaotearoa.github.io/Outlier_Analysis_Workshop/day_2/5.baypass/">
+      
+      
+        <link rel="prev" href="../4.bayescan/">
+      
+      
+        <link rel="next" href="../6.conclude/">
+      
+      <link rel="icon" href="../../theme_images/nesi_ga.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
+    
+    
+      
+        <title>BayPass - Outlier Analysis Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Mukta";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#baypass" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Outlier Analysis Workshop" class="md-header__button md-logo" aria-label="Outlier Analysis Workshop" data-md-component="logo">
+      
+  <img src="../../theme_images/nesi_ga.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Outlier Analysis Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              BayPass
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+            
+              <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_3" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9h-1.9M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69m-9.15 3.96h2.3L12 9l-1.15 3.65Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+            
+              <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_3">
+            
+              <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_2" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+              </label>
+            
+          
+        </form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/GenomicsAotearoa/Outlier_Analysis_Workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GenomicsAotearoa/Outlier_Analysis_Workshop
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../day_1/1.intro_and_setup/" class="md-tabs__link">
+        Day 1
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../4.bayescan/" class="md-tabs__link md-tabs__link--active">
+        Day 2
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Outlier Analysis Workshop" class="md-nav__button md-logo" aria-label="Outlier Analysis Workshop" data-md-component="logo">
+      
+  <img src="../../theme_images/nesi_ga.png" alt="logo">
+
+    </a>
+    Outlier Analysis Workshop
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/GenomicsAotearoa/Outlier_Analysis_Workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GenomicsAotearoa/Outlier_Analysis_Workshop
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Day 1
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Day 1
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../day_1/1.intro_and_setup/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../day_1/2.pcadapt/" class="md-nav__link">
+        PCAdapt
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../day_1/3.vcftools/" class="md-nav__link">
+        VCFtools
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Day 2
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Day 2
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4.bayescan/" class="md-nav__link">
+        BayeScan
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        BayPass
+      </a>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6.conclude/" class="md-nav__link">
+        Conclusion
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="baypass">BayPass<a class="headerlink" href="#baypass" title="Permanent link">&para;</a></h1>
+<p>The BayPass manual can be found <a href="http://www1.montpellier.inra.fr/CBGP/software/baypass/files/BayPass_manual_2.31.pdf">here</a>.</p>
+<div class="admonition abstract">
+<p class="admonition-title">Citation</p>
+<p>Gautier, M. (2015). Genome-wide scan for adaptive divergence and association with population-specific covariates. Genetics, 201(4), 1555-1579. <a href="https://doi.org/10.1534/genetics.115.181453">https://doi.org/10.1534/genetics.115.181453</a> </p>
+</div>
+<p>BayPass requires that the allele frequency data be on a population, not an individual basis. The genotyping data file is organized as a matrix with nsnp rows and 2 ∗ npop columns. The row field separator is a space. More precisely, each row corresponds to one marker, and the number of columns is twice the number of populations because each pair of numbers corresponds to each allele (or read counts for PoolSeq experiment) counts in one population.</p>
+<p>To generate this population gene count data, we will work with the PLINK file. First, we have to fix the individual ID and population labels, as PLINK has pulled these directly from the VCF, which has no population information. We aim for population in column 1 and individual ID in column 2.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$DIR</span>/data
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>awk<span class="w"> </span><span class="s1">&#39;{print $2,&quot;\t&quot;,$1}&#39;</span><span class="w"> </span><span class="nv">$METADATA</span><span class="w"> </span>&gt;<span class="w"> </span>starling_3populations_metadata_POPIND.txt
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$DIR</span>/analysis/baypass
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nv">PLINK</span><span class="o">=</span><span class="nv">$DIR</span>/data/starling_3populations.plink.ped
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1">#remove first 2 columns</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>cut<span class="w"> </span>-f<span class="w"> </span><span class="m">3</span>-<span class="w"> </span><span class="nv">$PLINK</span><span class="w"> </span>&gt;<span class="w"> </span>x.delete
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>paste<span class="w"> </span><span class="nv">$DIR</span>/data/starling_3populations_metadata_POPIND.txt<span class="w"> </span>x.delete<span class="w"> </span>&gt;<span class="w"> </span>starling_3populations.plink.ped
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>rm<span class="w"> </span>x.delete<span class="w"> </span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>cp<span class="w"> </span><span class="nv">$DIR</span>/data/starling_3populations.plink.map<span class="w"> </span>.
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>cp<span class="w"> </span><span class="nv">$DIR</span>/data/starling_3populations.plink.log<span class="w"> </span>.
+</code></pre></div>
+</div>
+<p>Run the population-based allele frequency calculations.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>module<span class="w"> </span>load<span class="w"> </span>PLINK/1.09b6.16<span class="w"> </span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>plink<span class="w"> </span>--file<span class="w"> </span>starling_3populations.plink<span class="w"> </span>--allow-extra-chr<span class="w"> </span>--freq<span class="w"> </span>counts<span class="w"> </span>--family<span class="w"> </span>--out<span class="w"> </span>starling_3populations
+</code></pre></div>
+<details class="success">
+<summary>Output</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>PLINK v1.90b6.16 64-bit (19 Feb 2020)          www.cog-genomics.org/plink/1.9/
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>(C) 2005-2020 Shaun Purcell, Christopher Chang   GNU General Public License v3
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Logging to starling_3populations.log.
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Options in effect:
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  --allow-extra-chr
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  --family
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  --file starling_3populations.plink
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  --freq counts
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  --out starling_3populations
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>128824 MB RAM detected; reserving 64412 MB for main workspace.
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>.ped scan complete (for binary autoconversion).
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>Performing single-pass .bed write (5007 variants, 39 people).
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>--file: starling_3populations-temporary.bed +
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>starling_3populations-temporary.bim + starling_3populations-temporary.fam
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>written.
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>5007 variants loaded from .bim file.
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>39 people (0 males, 0 females, 39 ambiguous) loaded from .fam.
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>Ambiguous sex IDs written to starling_3populations.nosex .
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>--family: 3 clusters defined.
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>Using 1 thread (no multithreaded calculations invoked).
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>Before main variant filters, 39 founders and 0 nonfounders present.
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>Calculating allele frequencies... done.
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>Total genotyping rate is 0.723331.
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>Note: --freq &#39;counts&#39; modifier has no effect on cluster-stratified report.
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>--freq: Cluster-stratified allele frequencies (founders only) written to
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>starling_3populations.frq.strat .
+</code></pre></div>
+</details>
+</div>
+<p>Manipulate file so it has BayPass format, numbers set for PLINK output file, and population number for column count.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>tail<span class="w"> </span>-n<span class="w"> </span>+2<span class="w"> </span>starling_3populations.frq.strat<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{ $9 = $8 - $7 } 1&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $7,$9}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span><span class="s2">&quot;\n&quot;</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/ /\n/6; P; D&#39;</span><span class="w"> </span>&gt;<span class="w"> </span>starling_3populations_baypass.txt
+</code></pre></div>
+</div>
+<p>Now we can run Baypass. It should run for about 5 minutes.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>module<span class="w"> </span>purge
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>module<span class="w"> </span>load<span class="w"> </span>BayPass/2.31-intel-2022a
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$DIR</span>/analysis/baypass
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>i_baypass<span class="w"> </span>-npop<span class="w"> </span><span class="m">3</span><span class="w"> </span>-gfile<span class="w"> </span>./starling_3populations_baypass.txt<span class="w"> </span>-outprefix<span class="w"> </span>starling_3populations_baypass<span class="w"> </span>-nthreads<span class="w"> </span><span class="m">2</span>
+</code></pre></div>
+</div>
+<p>Run in R to make the anapod data. First, let us quickly download the utilities we need.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$DIR</span>/programs
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/andbeck/BayPass.git
+</code></pre></div>
+</div>
+<p>Now let us generate some simulated data based on the parameters calculated from our genetic data.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>module<span class="w"> </span>load<span class="w"> </span>R-bundle-Bioconductor/3.15-gimkl-2022a-R-4.2.1
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>R
+</code></pre></div>
+</div>
+<div class="admonition r-project">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nf">library</span><span class="p">(</span><span class="s">&quot;ape&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nf">setwd</span><span class="p">(</span><span class="s">&quot;~/outlier_analysis/analysis/baypass&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nf">source</span><span class="p">(</span><span class="s">&quot;../../programs/BayPass/baypass_utils.R&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">omega</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.matrix</span><span class="p">(</span><span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;starling_3populations_baypass_mat_omega.out&quot;</span><span class="p">))</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">pi.beta.coef</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;starling_3populations_baypass_summary_beta_params.out&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">bta14.data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">geno2YN</span><span class="p">(</span><span class="s">&quot;starling_3populations_baypass.txt&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="n">simu.bta</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">simulate.baypass</span><span class="p">(</span><span class="n">omega.mat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">omega</span><span class="p">,</span><span class="w"> </span><span class="n">nsnp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5000</span><span class="p">,</span><span class="w"> </span><span class="n">sample.size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bta14.data</span><span class="o">$</span><span class="n">NN</span><span class="p">,</span><span class="w"> </span><span class="n">beta.pi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pi.beta.coef</span><span class="o">$</span><span class="n">Mean</span><span class="p">,</span><span class="w"> </span><span class="n">pi.maf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">suffix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;btapods&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="nf">q</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<p>We now have the simulated genetic data. We can find the XtX statistic threshold above which we will consider genetic sites an outlier.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>module<span class="w"> </span>purge
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>module<span class="w"> </span>load<span class="w"> </span>BayPass/2.31-intel-2022a
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$DIR</span>/analysis/baypass
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>i_baypass<span class="w"> </span>-npop<span class="w"> </span><span class="m">3</span><span class="w"> </span>-gfile<span class="w"> </span>G.btapods<span class="w"> </span>-outprefix<span class="w"> </span>G.btapods<span class="w"> </span>-nthreads<span class="w"> </span><span class="m">2</span>
+</code></pre></div>
+</div>
+<p>XtX calibration; get the pod XtX threshold.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>module<span class="w"> </span>load<span class="w"> </span>R-bundle-Bioconductor/3.15-gimkl-2022a-R-4.2.1
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>R
+</code></pre></div>
+</div>
+<div class="admonition r-project">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nf">setwd</span><span class="p">(</span><span class="s">&quot;~/outlier_analysis/analysis/baypass&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nf">source</span><span class="p">(</span><span class="s">&quot;~/outlier_analysis/programs/BayPass/baypass_utils.R&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nf">library</span><span class="p">(</span><span class="s">&quot;ape&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="nf">library</span><span class="p">(</span><span class="s">&quot;corrplot&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="n">pod.xtx</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;G.btapods_summary_pi_xtx.out&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">T</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<p>We compute the 1% threshold for the simulated neutral data.</p>
+<div class="admonition r-project">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">pod.thresh</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">quantile</span><span class="p">(</span><span class="n">pod.xtx</span><span class="o">$</span><span class="n">M_XtX</span><span class="w"> </span><span class="p">,</span><span class="n">probs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.99</span><span class="p">)</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">pod.thresh</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="nf">q</span><span class="p">()</span>
+</code></pre></div>
+<details class="success">
+<summary>Output</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>     99% 
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>6.365673 
+</code></pre></div>
+</details>
+</div>
+<p>Your values may be slightly different as the simulated data will not be identical.</p>
+<p>Next, we filter the data for the outlier SNPs by identifying those above the threshold.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cat<span class="w"> </span>starling_3populations_baypass_summary_pi_xtx.out<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;$4&gt;6.258372&#39;</span><span class="w"> </span>&gt;<span class="w"> </span>baypass_outliers.txt
+</code></pre></div>
+</div>
+<p>SNP IDs are lost in BayeScan, line numbers are used as signifiers. We have previously created a list of SNPs in VCF and line numbers, which can be found at <code>$DIR/analysis/starling_3populations_SNPs.txt</code> which we will now reuse to generate a list of the outlier SNPS.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>awk<span class="w"> </span><span class="s1">&#39;FNR==NR{a[$1];next} (($4) in a)&#39;</span><span class="w"> </span>baypass_outliers.txt<span class="w"> </span><span class="nv">$DIR</span>/analysis/starling_3populations_SNPs.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-f3<span class="w"> </span>&gt;<span class="w"> </span>baypass_outlierSNPIDs.txt
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>wc<span class="w"> </span>-l<span class="w"> </span>baypass_outlierSNPIDs.txt
+</code></pre></div>
+<details class="success">
+<summary>Output</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>39 baypass_outlierSNPIDs.txt
+</code></pre></div>
+</details>
+</div>
+<p>Now let's find SNPs that are statistically associated with wingspan. To do this, we have to go back to the metadata and compute the average wingspan of each of our populations and place them in a file.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>module<span class="w"> </span>load<span class="w"> </span>R-bundle-Bioconductor/3.15-gimkl-2022a-R-4.2.1
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>R
+</code></pre></div>
+</div>
+<div class="admonition r-project">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nf">setwd</span><span class="p">(</span><span class="s">&quot;~/outlier_analysis/analysis/baypass&quot;</span><span class="p">)</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">metadata</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;../../data/starling_3populations_metadata.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;\t&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="nf">str</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="n">pop_metadata</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span><span class="n">V3</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">V2</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">mean</span><span class="p">)</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="c1"># Check mean wingspan</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="n">pop_metadata</span><span class="p">[,</span><span class="w"> </span><span class="m">2</span><span class="p">]</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="nf">write</span><span class="p">(</span><span class="n">pop_metadata</span><span class="p">[,</span><span class="w"> </span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="s">&quot;pop_mean_wingspan.txt&quot;</span><span class="p">)</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="nf">q</span><span class="p">()</span>
+</code></pre></div>
+<details class="success">
+<summary>Output:</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>[1] 14.89805 19.63306 22.09655
+</code></pre></div>
+</details>
+</div>
+<p>Now we can run the third and final BayPass job, which will let us know which SNPs are statistically associated with wingspan.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>module<span class="w"> </span>purge
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>module<span class="w"> </span>load<span class="w"> </span>BayPass/2.31-intel-2022a
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$DIR</span>/analysis/baypass
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>i_baypass<span class="w"> </span>-npop<span class="w"> </span><span class="m">3</span><span class="w"> </span>-gfile<span class="w"> </span>starling_3populations_baypass.txt<span class="w"> </span>-efile<span class="w"> </span>pop_mean_wingspan.txt<span class="w"> </span>-scalecov<span class="w"> </span>-auxmodel<span class="w"> </span>-nthreads<span class="w"> </span><span class="m">2</span><span class="w"> </span>-omegafile<span class="w"> </span>starling_3populations_baypass_mat_omega.out<span class="w"> </span>-outprefix<span class="w"> </span>starling_3populations_baypass_wing
+</code></pre></div>
+</div>
+<p>Next we plot the outliers. We are choosing a <a href="https://www.statology.org/bayes-factor/">BF threshold</a> of 20 dB, which indicates "Strong evidence for alternative hypothesis."</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>module<span class="w"> </span>load<span class="w"> </span>R-bundle-Bioconductor/3.15-gimkl-2022a-R-4.2.1
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>R
+</code></pre></div>
+</div>
+<div class="admonition r-project">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="nf">setwd</span><span class="p">(</span><span class="s">&quot;~/outlier_analysis/analysis/baypass&quot;</span><span class="p">)</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="n">covaux.snp.res.mass</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;starling_3populations_baypass_wing_summary_betai.out&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">T</span><span class="p">)</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="n">covaux.snp.xtx.mass</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;starling_3populations_baypass_summary_pi_xtx.out&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">T</span><span class="p">)</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="nf">pdf</span><span class="p">(</span><span class="s">&quot;Baypass_plots.pdf&quot;</span><span class="p">)</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="nf">layout</span><span class="p">(</span><span class="nf">matrix</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span><span class="m">3</span><span class="p">,</span><span class="m">1</span><span class="p">))</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="nf">plot</span><span class="p">(</span><span class="n">covaux.snp.res.mass</span><span class="o">$</span><span class="n">BF.dB.</span><span class="p">,</span><span class="n">xlab</span><span class="o">=</span><span class="s">&quot;Mass&quot;</span><span class="p">,</span><span class="n">ylab</span><span class="o">=</span><span class="s">&quot;BFmc (in dB)&quot;</span><span class="p">)</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="nf">plot</span><span class="p">(</span><span class="n">covaux.snp.res.mass</span><span class="o">$</span><span class="n">M_Beta</span><span class="p">,</span><span class="n">xlab</span><span class="o">=</span><span class="s">&quot;SNP&quot;</span><span class="p">,</span><span class="n">ylab</span><span class="o">=</span><span class="nf">expression</span><span class="p">(</span><span class="n">beta</span><span class="o">~</span><span class="s">&quot;coefficient&quot;</span><span class="p">))</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="nf">plot</span><span class="p">(</span><span class="n">covaux.snp.xtx.mass</span><span class="o">$</span><span class="n">M_XtX</span><span class="p">,</span><span class="w"> </span><span class="n">xlab</span><span class="o">=</span><span class="s">&quot;SNP&quot;</span><span class="p">,</span><span class="n">ylab</span><span class="o">=</span><span class="s">&quot;XtX corrected for SMS&quot;</span><span class="p">)</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="nf">dev.off</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<p><a class="glightbox" href="../../images/Baypass.PNG" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="baypass_output" src="../../images/Baypass.PNG" width="600px" /></a></p>
+<p>Finally, let's generate the list of phenotype-associated SNP IDs. </p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>cat<span class="w"> </span>starling_3populations_baypass_wing_summary_betai.out<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;$6&gt;20&#39;</span><span class="w"> </span>&gt;<span class="w"> </span>starling_3populations_baypass_wing_BF20.txt
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>wc<span class="w"> </span>-l<span class="w"> </span>starling_3populations_baypass_wing_BF20.txt
+</code></pre></div>
+<details class="success">
+<summary>Output</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>45 starling_3populations_baypass_wing_BF20.txt
+</code></pre></div>
+<!-- Used to be 48 -->
+</details>
+</div>
+<p>Filter the data sets for SNPS above BFmc threshold. These are out outlier SNPs that are associated with wingspan.</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>awk<span class="w"> </span><span class="s1">&#39;FNR==NR{a[$2];next} (($4) in a)&#39;</span><span class="w"> </span>starling_3populations_baypass_wing_BF20.txt<span class="w"> </span>starling_3populations_SNPs.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-f3<span class="w"> </span>&gt;<span class="w"> </span>baypass_wingspan_outlierSNPIDs.txt
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>comm<span class="w"> </span>-12<span class="w"> </span>&lt;<span class="o">(</span>sort<span class="w"> </span>baypass_wingspan_outlierSNPIDs.txt<span class="o">)</span><span class="w"> </span>&lt;<span class="o">(</span>sort<span class="w"> </span>baypass_outlierSNPIDs.txt<span class="o">)</span><span class="w"> </span>&gt;<span class="w"> </span>double_outliers.txt
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>wc<span class="w"> </span>-l<span class="w"> </span>double_outliers.txt
+</code></pre></div>
+<details class="success">
+<summary>Output</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>21 double_outliers.txt
+</code></pre></div>
+</details>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "navigation.tabs", "navigation.tabs.sticky"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>
